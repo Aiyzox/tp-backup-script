@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Fonction pour sauvegarder les fichiers .sh
+sauvegarde_fichiers() {
+    find . -maxdepth 1 -type f -name "*.sh" | while IFS= read -r file; do
+        cp "$file" "$file.save"
+        echo "Fichier sauvegardé : $file → $file.save"
+    done
+}
+
+# Fonction pour supprimer les fichiers .save
+suppression_fichiers() {
+    find . -maxdepth 1 -type f -name "*.save" | while IFS= read -r file; do
+        rm "$file"
+        echo "Suppression : $file"
+    done
+}
+
+# Fonction pour afficher les fichiers avec couleurs
+afficher_fichiers() {
+    find . -maxdepth 1 -type f -name "*.sh" | while IFS= read -r file; do
+        if [ -f "$file.save" ]; then
+                echo -e "\e[32m $file (sauvegarde existante)\e[0m"
+            else
+                echo -e "\e[31m $file (pas de sauvegarde)\e[0m"
+            fi
+    done
+}
